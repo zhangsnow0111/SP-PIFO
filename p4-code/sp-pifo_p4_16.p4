@@ -117,42 +117,51 @@ control MyIngress(inout headers hdr,
     
     apply {
         if (hdr.ipv4.isValid()) {
+            //读取当前ipv4的qos, Type of Service服务类型
+            //queue_bound中索引为0的队列是最下面的队列，优先级最低
             meta.rank = (bit<32>)hdr.ipv4.tos;
             queue_bound.read(meta.current_queue_bound, 0);
             if ((meta.current_queue_bound <= meta.rank)) {
                 standard_metadata.priority = (bit<3>)0;
                 queue_bound.write(0, meta.rank);
-            } else {
+            } 
+            else {
                 queue_bound.read(meta.current_queue_bound, 1);
                 if ((meta.current_queue_bound <= meta.rank)) {
                     standard_metadata.priority = (bit<3>)1;
                     queue_bound.write(1, meta.rank);
-                } else {
+                } 
+                else {
                     queue_bound.read(meta.current_queue_bound, 2);
                     if ((meta.current_queue_bound <= meta.rank)) {
                         standard_metadata.priority = (bit<3>)2;
                         queue_bound.write(2, meta.rank);
-                    } else {
+                    } 
+                    else {
                         queue_bound.read(meta.current_queue_bound, 3);
                         if ((meta.current_queue_bound <= meta.rank)) {
                             standard_metadata.priority = (bit<3>)3;
                             queue_bound.write(3, meta.rank);
-                        } else {
+                        } 
+                        else {
                             queue_bound.read(meta.current_queue_bound, 4);
                             if ((meta.current_queue_bound <= meta.rank)) {
                                 standard_metadata.priority = (bit<3>)4;
                                 queue_bound.write(4, meta.rank);
-                            } else {
+                            } 
+                            else {
                                 queue_bound.read(meta.current_queue_bound, 5);
                                 if ((meta.current_queue_bound <= meta.rank)) {
                                     standard_metadata.priority = (bit<3>)5;
                                     queue_bound.write(5, meta.rank);
-                                } else {
+                                } 
+                                else {
                                     queue_bound.read(meta.current_queue_bound, 6);
                                     if ((meta.current_queue_bound <= meta.rank)) {
                                         standard_metadata.priority = (bit<3>)6;
                                         queue_bound.write(6, meta.rank);
-                                    } else {
+                                    } 
+                                    else {
                                         standard_metadata.priority = (bit<3>)7;
                                         queue_bound.read(meta.current_queue_bound, 7);
 
